@@ -1,0 +1,142 @@
+--- vrpn/server_src/timecode_generator_server/CMakeLists.txt.orig	2014-11-15 20:29:37.000000000 +0100
++++ vrpn/server_src/timecode_generator_server/CMakeLists.txt	2014-12-21 13:27:10.462620029 +0100
+@@ -26,7 +26,10 @@
+ 	vrpn_timecode_generator
+ 	ARCHIVE
+ 	DESTINATION
+-	lib
++	lib${LIB_SUFFIX}
++	LIBRARY
++	DESTINATION
++	lib${LIB_SUFFIX}
+ 	COMPONENT
+ 	serversdk
+ 	PUBLIC_HEADER
+--- vrpn/quat/CMakeLists.txt.orig	2014-11-15 20:29:37.000000000 +0100
++++ vrpn/quat/CMakeLists.txt	2014-12-21 13:40:52.389252202 +0100
+@@ -39,7 +39,10 @@
+ 	quat
+ 	ARCHIVE
+ 	DESTINATION
+-	lib
++	lib${LIB_SUFFIX}
++	LIBRARY
++	DESTINATION
++	lib${LIB_SUFFIX}
+ 	COMPONENT
+ 	serversdk
+ 	PUBLIC_HEADER
+@@ -51,7 +54,10 @@
+ 	quat
+ 	ARCHIVE
+ 	DESTINATION
+-	lib
++	lib${LIB_SUFFIX}
++	LIBRARY
++	DESTINATION
++	lib${LIB_SUFFIX}
+ 	COMPONENT
+ 	clientsdk
+ 	PUBLIC_HEADER
+--- vrpn/atmellib/CMakeLists.txt.orig	2014-11-15 20:29:36.000000000 +0100
++++ vrpn/atmellib/CMakeLists.txt	2014-12-21 13:50:20.449228362 +0100
+@@ -26,7 +26,10 @@
+ 	vrpn_atmel
+ 	ARCHIVE
+ 	DESTINATION
+-	lib
++	lib${LIB_SUFFIX}
++	LIBRARY
++	DESTINATION
++	lib${LIB_SUFFIX}
+ 	COMPONENT
+ 	serversdk
+ 	PUBLIC_HEADER
+--- vrpn/gpsnmealib/CMakeLists.txt.orig	2014-11-15 20:29:36.000000000 +0100
++++ vrpn/gpsnmealib/CMakeLists.txt	2014-12-21 13:50:46.005893957 +0100
+@@ -26,7 +26,10 @@
+ 	gpsnmea
+ 	ARCHIVE
+ 	DESTINATION
+-	lib
++	lib${LIB_SUFFIX}
++	LIBRARY
++	DESTINATION
++	lib${LIB_SUFFIX}
+ 	COMPONENT
+ 	serversdk
+ 	PUBLIC_HEADER
+--- vrpn/CMakeLists.txt.orig	2014-11-15 20:29:36.000000000 +0100
++++ vrpn/CMakeLists.txt	2014-12-21 13:51:26.629225586 +0100
+@@ -1196,7 +1196,10 @@
+ 		vrpnserver
+ 		ARCHIVE
+ 		DESTINATION
+-		lib
++		lib${LIB_SUFFIX}
++		LIBRARY
++		DESTINATION
++		lib${LIB_SUFFIX}
+ 		COMPONENT
+ 		serversdk
+ 		PUBLIC_HEADER
+@@ -1242,7 +1245,10 @@
+ 		vrpn
+ 		ARCHIVE
+ 		DESTINATION
+-		lib
++		lib${_LIB_SUFFIX}
++		LIBRARY
++		DESTINATION
++		lib${_LIB_SUFFIX}
+ 		COMPONENT
+ 		clientsdk
+ 		PUBLIC_HEADER
+--- vrpn/server_src/CMakeLists.txt.orig	2014-11-15 20:29:37.000000000 +0100
++++ vrpn/server_src/CMakeLists.txt	2014-12-21 15:22:46.578995609 +0100
+@@ -131,7 +131,7 @@
+ 		COMPONENT mainserver)
+ else()
+ 	install(FILES "${CMAKE_CURRENT_BINARY_DIR}/vrpn.cfg"
+-		DESTINATION etc
++		DESTINATION ${SYSCONF_INSTALL_DIR}
+ 		COMPONENT mainserver)
+ endif()
+ 
+--- vrpn/python_vrpn/CMakeLists.txt.orig	2014-11-15 20:29:37.000000000 +0100
++++ vrpn/python_vrpn/CMakeLists.txt	2014-12-21 21:49:12.664689252 +0100
+@@ -69,19 +69,19 @@
+ 		install(FILES
+ 			"${CMAKE_CURRENT_BINARY_DIR}/${module}.py"
+ 			DESTINATION
+-			lib/${PYTHONVERSIONDIR}dist-packages/
++			lib/${PYTHONVERSIONDIR}site-packages/
+ 			COMPONENT
+ 			python)
+ 		install(TARGETS
+ 			${SWIG_MODULE_${module}_REAL_NAME}
+ 			RUNTIME
+ 			DESTINATION
+-			lib/${PYTHONVERSIONDIR}dist-packages/
++			lib${LIB_SUFFIX}/${PYTHONVERSIONDIR}site-packages/
+ 			COMPONENT
+ 			python
+ 			LIBRARY
+ 			DESTINATION
+-			lib/${PYTHONVERSIONDIR}dist-packages/
++			lib${LIB_SUFFIX}/${PYTHONVERSIONDIR}site-packages/
+ 			COMPONENT
+ 			python)
+ 	endforeach()
+--- vrpn/python/CMakeLists.txt.orig	2014-11-15 20:29:36.000000000 +0100
++++ vrpn/python/CMakeLists.txt	2014-12-22 21:14:09.611151644 +0100
+@@ -56,7 +56,7 @@
+ #			LIBRARY DESTINATION lib/${PYTHONVERSIONDIR}dist-packages/ COMPONENT python)
+ 	else()
+ 		install(TARGETS vrpn-python
+-			RUNTIME DESTINATION lib/${PYTHONVERSIONDIR}dist-packages/ COMPONENT python
+-			LIBRARY DESTINATION lib/${PYTHONVERSIONDIR}dist-packages/ COMPONENT python)
++			RUNTIME DESTINATION lib${LIB_SUFFIX}/${PYTHONVERSIONDIR}site-packages/ COMPONENT python
++			LIBRARY DESTINATION lib${LIB_SUFFIX}/${PYTHONVERSIONDIR}site-packages/ COMPONENT python)
+ 	endif()
+ endif()
