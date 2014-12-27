@@ -1,9 +1,10 @@
-# TODO: modbus, system hidapi, openhaptics, ghost, wiiuse(GPL v3), libnifalcon, intersense, nidaqmx, viewpoint, phasespace, libfreespace
+# TODO: openhaptics, ghost, wiiuse(GPL v3), libnifalcon, intersense, nidaqmx, viewpoint, phasespace, libfreespace
 # NATIONAL_INSTRUMENTS, NIDAQ, USDIGITAL, MICROSCRIBE, MONITONNODE, TRIVISIOCOLIBRI ???
 #
 # Conditional build:
 %bcond_without	apidocs		# do not build and package API docs
 %bcond_without	gpm		# GPM Linux mouse interface support (GPL v2+)
+%bcond_without	modbus		# Modbus support
 %bcond_with	mpi		# MPI support
 %bcond_without	java		# Java binding
 #
@@ -20,6 +21,7 @@ Source0:	http://www.cs.unc.edu/Research/vrpn/downloads/%{name}_%{fver}.zip
 # Source0-md5:	6cb32e51e6420385f2006f1aae58b457
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-jsoncpp.patch
+Patch2:		%{name}-modbus.patch
 URL:		http://www.cs.unc.edu/Research/vrpn/
 BuildRequires:	cmake >= 2.8.3
 %{?with_apidocs:BuildRequires:	doxygen}
@@ -27,6 +29,7 @@ BuildRequires:	cmake >= 2.8.3
 BuildRequires:	hidapi-devel >= 0.7.0
 BuildRequires:	jdk
 BuildRequires:	jsoncpp-devel >= 0.7.0
+%{?with_modbus:BuildRequires:	libmodbus-devel}
 BuildRequires:	libstdc++-devel
 BuildRequires:	libusb-devel >= 1.0
 %{?with_mpi:BuildRequires:	mpi-devel}
@@ -118,6 +121,7 @@ Wiązania Pythona do bibliotek VRPN.
 %setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 install -d build
@@ -128,6 +132,7 @@ cd build
 	-DVRPN_USE_GPM_MOUSE=%{?with_gpm:ON}%{!?with_gpm:OFF} \
 	-DVRPN_USE_LOCAL_HIDAPI=OFF \
 	-DVRPN_USE_LOCAL_JSONCPP=OFF \
+	%{?with_modbus:-DVRPN_USE_MODBUS=ON} \
 	-DVRPN_USE_MPI=%{?with_mpi:ON}%{!?with_mpi:OFF} \
 	-DVRPN_BUILD_PYTHON=ON
 

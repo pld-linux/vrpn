@@ -1,0 +1,40 @@
+--- vrpn/cmake/FindModbus.cmake.orig	2014-11-15 20:29:36.000000000 +0100
++++ vrpn/cmake/FindModbus.cmake	2014-12-27 20:17:25.953165184 +0100
+@@ -46,6 +46,7 @@
+ 	"${MODBUS_ROOT_DIR}"
+ 	PATH_SUFFIXES
+ 	include
++	include/modbus
+ 	PATHS
+ 	"${_progfiles}/libmodbus"
+ 	C:/usr/local
+@@ -54,6 +55,7 @@
+ # Look for the library.
+ find_library(MODBUS_LIBRARY
+ 	NAMES
++	modbus
+ 	libmodbus.lib
+ 	libmodbus.a
+ 	HINTS
+--- vrpn/vrpn_OmegaTemperature.h.orig	2014-11-15 20:29:37.000000000 +0100
++++ vrpn/vrpn_OmegaTemperature.h	2014-12-27 21:09:49.579699911 +0100
+@@ -31,7 +31,7 @@
+ #	2	Turn temperature control on/off (0 = off, otherwise on)
+ */
+ 
+-#if defined(VRPN_USE_MODBUS) && defined(VRPN_USE_WINSOCK2)
++#if defined(VRPN_USE_MODBUS)
+ #include <modbus.h>
+ 
+ class VRPN_API vrpn_OmegaTemperature: public vrpn_Serial_Analog,
+--- vrpn/vrpn_OmegaTemperature.C.orig	2014-11-15 20:29:37.000000000 +0100
++++ vrpn/vrpn_OmegaTemperature.C	2014-12-27 21:09:12.179701499 +0100
+@@ -72,7 +72,7 @@
+ 
+ VRPN_SUPPRESS_EMPTY_OBJECT_WARNING()
+ 
+-#if defined(VRPN_USE_MODBUS) && defined(VRPN_USE_WINSOCK2)
++#if defined(VRPN_USE_MODBUS)
+ 
+ #undef VERBOSE
+ 
