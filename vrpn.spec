@@ -19,12 +19,14 @@ Group:		Libraries
 Source0:	http://www.cs.unc.edu/Research/vrpn/downloads/%{name}_%{fver}.zip
 # Source0-md5:	6cb32e51e6420385f2006f1aae58b457
 Patch0:		%{name}-install.patch
+Patch1:		%{name}-jsoncpp.patch
 URL:		http://www.cs.unc.edu/Research/vrpn/
 BuildRequires:	cmake >= 2.8.3
 %{?with_apidocs:BuildRequires:	doxygen}
 %{?with_gpm:BuildRequires:	gpm-devel}
+BuildRequires:	hidapi-devel >= 0.7.0
 BuildRequires:	jdk
-BuildRequires:	jsoncpp-devel
+BuildRequires:	jsoncpp-devel >= 0.7.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libusb-devel >= 1.0
 %{?with_mpi:BuildRequires:	mpi-devel}
@@ -115,6 +117,7 @@ Wiązania Pythona do bibliotek VRPN.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 
 %build
 install -d build
@@ -123,6 +126,8 @@ cd build
 	-DSYSCONF_INSTALL_DIR=%{_sysconfdir}/vrpn \
 	%{?with_gpl:-DVRPN_GPL_SERVER=ON} \
 	-DVRPN_USE_GPM_MOUSE=%{?with_gpm:ON}%{!?with_gpm:OFF} \
+	-DVRPN_USE_LOCAL_HIDAPI=OFF \
+	-DVRPN_USE_LOCAL_JSONCPP=OFF \
 	-DVRPN_USE_MPI=%{?with_mpi:ON}%{!?with_mpi:OFF} \
 	-DVRPN_BUILD_PYTHON=ON
 
