@@ -1,4 +1,5 @@
-# TODO: openhaptics, ghost, wiiuse(GPL v3), libnifalcon, intersense, nidaqmx, viewpoint, phasespace, libfreespace
+# TODO: libnifalcon, intersense, nidaqmx, viewpoint, phasespace, libfreespace
+# proprietary: openhaptics, ghost,
 # NATIONAL_INSTRUMENTS, NIDAQ, USDIGITAL, MICROSCRIBE, MONITONNODE, TRIVISIOCOLIBRI ???
 #
 # Conditional build:
@@ -6,9 +7,10 @@
 %bcond_without	gpm		# GPM Linux mouse interface support (GPL v2+)
 %bcond_without	modbus		# Modbus support
 %bcond_with	mpi		# MPI support
+%bcond_without	wiiuse		# Wii support via wiiuse library (GPL v3+)
 %bcond_without	java		# Java binding
 #
-%define	with_gpl	0%{?with_gpm:1}
+%define	with_gpl	0%{?with_gpm:1}%{?with_wiiuse:1}
 Summary:	Virtual Reality Peripheral Network
 Summary(pl.UTF-8):	Sieć peryferiów do rzeczywistości wirtualnej (VR)
 Name:		vrpn
@@ -22,6 +24,7 @@ Source0:	http://www.cs.unc.edu/Research/vrpn/downloads/%{name}_%{fver}.zip
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-jsoncpp.patch
 Patch2:		%{name}-modbus.patch
+Patch3:		%{name}-wiiuse.patch
 URL:		http://www.cs.unc.edu/Research/vrpn/
 BuildRequires:	cmake >= 2.8.3
 %{?with_apidocs:BuildRequires:	doxygen}
@@ -122,19 +125,21 @@ Wiązania Pythona do bibliotek VRPN.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 install -d build
 cd build
 %cmake .. \
 	-DSYSCONF_INSTALL_DIR=%{_sysconfdir}/vrpn \
+	-DVRPN_BUILD_PYTHON=ON \
 	%{?with_gpl:-DVRPN_GPL_SERVER=ON} \
 	-DVRPN_USE_GPM_MOUSE=%{?with_gpm:ON}%{!?with_gpm:OFF} \
 	-DVRPN_USE_LOCAL_HIDAPI=OFF \
 	-DVRPN_USE_LOCAL_JSONCPP=OFF \
 	%{?with_modbus:-DVRPN_USE_MODBUS=ON} \
 	-DVRPN_USE_MPI=%{?with_mpi:ON}%{!?with_mpi:OFF} \
-	-DVRPN_BUILD_PYTHON=ON
+	%{!?with_wiiuse:-DVRPN_USE_WIIUSE=OFF}
 
 %{__make}
 
