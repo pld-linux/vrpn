@@ -1,4 +1,4 @@
-# TODO: libnifalcon, intersense, nidaqmx, viewpoint, phasespace, libfreespace
+# TODO: intersense, nidaqmx, viewpoint, phasespace, libfreespace
 # proprietary: openhaptics, ghost,
 # NATIONAL_INSTRUMENTS, NIDAQ, USDIGITAL, MICROSCRIBE, MONITONNODE, TRIVISIOCOLIBRI ???
 #
@@ -6,6 +6,7 @@
 %bcond_without	apidocs		# do not build and package API docs
 %bcond_without	gpm		# GPM Linux mouse interface support (GPL v2+)
 %bcond_without	modbus		# Modbus support
+%bcond_without	nifalcon	# NI Falcon support via libnifalcon
 %bcond_with	mpi		# MPI support
 %bcond_without	wiiuse		# Wii support via wiiuse library (GPL v3+)
 %bcond_without	java		# Java binding
@@ -33,6 +34,7 @@ BuildRequires:	hidapi-devel >= 0.7.0
 BuildRequires:	jdk
 BuildRequires:	jsoncpp-devel >= 0.7.0
 %{?with_modbus:BuildRequires:	libmodbus-devel}
+%{?with_nifalcon:BuildRequires:	libnifalcon-devel}
 BuildRequires:	libstdc++-devel
 BuildRequires:	libusb-devel >= 1.0
 %{?with_mpi:BuildRequires:	mpi-devel}
@@ -135,6 +137,7 @@ cd build
 	-DVRPN_BUILD_PYTHON=ON \
 	%{?with_gpl:-DVRPN_GPL_SERVER=ON} \
 	-DVRPN_USE_GPM_MOUSE=%{?with_gpm:ON}%{!?with_gpm:OFF} \
+	%{!?with_nifalcon:-DVRPN_USE_LIBNIFALCON=OFF} \
 	-DVRPN_USE_LOCAL_HIDAPI=OFF \
 	-DVRPN_USE_LOCAL_JSONCPP=OFF \
 	%{?with_modbus:-DVRPN_USE_MODBUS=ON} \
